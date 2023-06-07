@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Adherent{% endblock %}
+
+{% block body %}
+    <h1>Adherent</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ adherent.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ adherent.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ adherent.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ adherent.email }}</td>
+            </tr>
+            <tr>
+                <th>Date_inscription</th>
+                <td>{{ adherent.dateInscription ? adherent.dateInscription|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_adherent_index') }}">back to list</a>
+
+    <a href="{{ path('app_adherent_edit', {'id': adherent.id}) }}">edit</a>
+
+    {{ include('adherent/_delete_form.html.twig') }}
+{% endblock %}

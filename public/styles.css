@@ -1,0 +1,12 @@
+.header{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+.header a{
+    color: black;
+    text-decoration: none;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
