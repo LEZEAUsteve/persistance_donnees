@@ -17,6 +17,14 @@ class LivreController extends AbstractController
     public function index(LivreRepository $livreRepository): Response
     {
         return $this->render('livre/index.html.twig', [
+            'livres' => $livreRepository->findAllNotDeleted(),
+        ]);
+    }
+
+    #[Route('/withDeleted', name: 'app_livre_with-deleted', methods: ['GET'])]
+    public function withDeleted(LivreRepository $livreRepository): Response
+    {
+        return $this->render('livre/index.html.twig', [
             'livres' => $livreRepository->findAll(),
         ]);
     }
@@ -51,27 +59,30 @@ class LivreController extends AbstractController
     #[Route('/livre/{id}/edit', name: 'app_livre_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Livre $livre, LivreRepository $livreRepository): Response
     {
-        $form = $this->createForm(LivreType::class, $livre);
-        $form->handleRequest($request);
+        if ($livre->isIsDeleted() == false) {
+            $form = $this->createForm(LivreType::class, $livre);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $livreRepository->save($livre, true);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $livreRepository->save($livre, true);
 
+                return $this->redirectToRoute('app_livre_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->renderForm('livre/edit.html.twig', [
+                'livre' => $livre,
+                'form' => $form,
+            ]);
+        } else {
             return $this->redirectToRoute('app_livre_index', [], Response::HTTP_SEE_OTHER);
         }
-
-        return $this->renderForm('livre/edit.html.twig', [
-            'livre' => $livre,
-            'form' => $form,
-        ]);
     }
 
     #[Route('/livre/{id}', name: 'app_livre_delete', methods: ['POST'])]
     public function delete(Request $request, Livre $livre, LivreRepository $livreRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$livre->getId(), $request->request->get('_token'))) {
-            $livreRepository->remove($livre, true);
-        }
+        $livre->setIsDeleted(true);
+        $livreRepository->save($livre, true);
 
         return $this->redirectToRoute('app_livre_index', [], Response::HTTP_SEE_OTHER);
     }

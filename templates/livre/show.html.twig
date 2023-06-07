@@ -23,12 +23,20 @@
                 <th>Nombre_de_pages</th>
                 <td>{{ livre.nombreDePages }}</td>
             </tr>
+            <tr>
+                <th>Nombre_d'emprunts</th>
+                <td>{{ livre.nombreEmprunts }}</td>
+            </tr>
         </tbody>
     </table>
 
+    {% if not livre.isDeleted %}
+        <a href="{{ path('app_livre_edit', {'id': livre.id}) }}">edit</a>
+
+        {{ include('livre/_delete_form.html.twig') }}
+    {% else %}
+    <p>Ce livre a été supprimé</p>
+    {% endif %}
+    <br>
     <a href="{{ path('app_livre_index') }}">back to list</a>
-
-    <a href="{{ path('app_livre_edit', {'id': livre.id}) }}">edit</a>
-
-    {{ include('livre/_delete_form.html.twig') }}
 {% endblock %}

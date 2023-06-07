@@ -39,20 +39,18 @@ class LivreRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Livre[] Returns an array of Livre objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('l.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   /**
+    * @return Livre[] Returns an array of Livre objects
+    */
+   public function findAllNotDeleted(): array
+   {
+       return $this->createQueryBuilder('l')
+           ->andWhere('l.isDeleted = :val')
+           ->setParameter('val', false)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
 
 //    public function findOneBySomeField($value): ?Livre
 //    {

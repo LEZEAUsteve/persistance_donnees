@@ -5,6 +5,9 @@
 {% block body %}
     <h1>Livre index</h1>
 
+    <a href="{{ path('app_livre_index') }}">Livres disponible</a>
+    <a href="{{ path('app_livre_with-deleted') }}">Tout les livres</a>
+
     <table class="table">
         <thead>
             <tr>
@@ -24,7 +27,9 @@
                 <td>{{ livre.nombreDePages }}</td>
                 <td>
                     <a href="{{ path('app_livre_show', {'id': livre.id}) }}">show</a>
-                    <a href="{{ path('app_livre_edit', {'id': livre.id}) }}">edit</a>
+                    {% if not livre.isDeleted %}
+                        <a href="{{ path('app_livre_edit', {'id': livre.id}) }}">edit</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

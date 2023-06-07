@@ -167,4 +167,9 @@ class Livre
 
         return $this;
     }
+
+    public function nombreEmprunts(): int
+    {
+        return count($this->emprunts);
+    }
 }

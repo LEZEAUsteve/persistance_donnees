@@ -3,9 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Emprunt;
+use App\Entity\Livre;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\ORM\EntityRepository;
 
 class EmpruntType extends AbstractType
 {
@@ -15,7 +18,15 @@ class EmpruntType extends AbstractType
             ->add('date_emprunt')
             ->add('date_fin_prevue')
             ->add('adherent')
-            ->add('livre')
+            ->add('livre', EntityType::class, [
+                'class' => Livre::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('l')
+                    ->andWhere('l.isDeleted = :deleted')
+                    ->setParameter('deleted', false);
+                },
+                'choice_label' => 'titre',
+            ]);
         ;
     }
 
