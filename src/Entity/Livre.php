@@ -35,6 +35,9 @@ class Livre
     #[ORM\OneToMany(mappedBy: 'livre', targetEntity: Emprunt::class)]
     private Collection $emprunts;
 
+    #[ORM\Column]
+    private ?bool $isDeleted = false;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -151,5 +154,17 @@ class Livre
     public function __toString(): string
     {
         return $this->titre;
+    }
+
+    public function isIsDeleted(): ?bool
+    {
+        return $this->isDeleted;
+    }
+
+    public function setIsDeleted(bool $isDeleted): self
+    {
+        $this->isDeleted = $isDeleted;
+
+        return $this;
     }
 }
