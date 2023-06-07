@@ -14,7 +14,6 @@
                 <th>Id</th>
                 <th>Date_emprunt</th>
                 <th>Date_fin_prevue</th>
-                {{ dump(app.request.requesturi) }}
                 {% if (app.request.requesturi != "/emprunt/all-emprunte") %}
                     <th>Date_retour</th>
                 {% endif %}
